@@ -1,0 +1,95 @@
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  box-sizing: border-box;
+}
+
+a {
+  text-decoration: none;
+}
+
+li {
+  list-style: none;
+}
+
+h1 {
+  font-size: 3.6rem;
+}
+
+h2 {
+  font-size: 2rem;
+}
+
+h3 {
+  font-size: 1.6rem;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: white;
+  padding: 0;
+  margin: 0;
+}
+
+.background {
+  background-image: url(../assets/img/banner-bg.webp);
+  max-width: 1400px;
+  height: 25rem;
+  background-position:inherit;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  font-size: 2rem;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.logo .image {
+  width: 4rem;
+  height: 4rem;
+}
+
+.logo p {
+  font-size: 2rem;
+ color:chocolate ; 
+
+}
+
+.logo p span {
+  color: green;
+}
+
+
+.menu {
+  position: relative;
+  right: 1rem;
+  
+}
+
+.menu a {
+  color: green;
+  font-family: Arial, Helvetica, sans-serif;
+  padding:1rem;
+}
+
+.menu a:hover {
+  cursor: pointer;
+  color: chocolate;
+}
+
+@media (max-width: 700px) {
+  nav{
+    visibility: hidden;
+  }
+}

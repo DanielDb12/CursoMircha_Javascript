@@ -1,5 +1,5 @@
 // creando elemento y fragmentos
-
+//appenchild: crea un hijo en el elemento e
 const $figure = document.createElement('figure'),
 $img = document.createElement('img'),
 $figcaption = document.createElement('figcaption'),

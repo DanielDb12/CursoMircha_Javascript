@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: inherit;
+      }
+
+      html {
+        box-sizing: border-box;
+        font-family: sans-serif;
+        font-size: 16px;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+
+      img {
+        max-width: 100%;
+        height: auto;
+      }
+
+      main {
+        flex-grow: 1;
+      }
+
+      a {
+        text-decoration: none;
+      }
+
+      .container {
+        margin-left: auto;
+        margin-right: auto;
+        max-width: 992px;
+      }
+
+      .header {
+        padding: 0.5rem;
+        background-color: antiquewhite;
+      }
+
+      .header-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .logo img {
+        position: relative;
+        right: 120%;
+        bottom: 2rem;
+        max-width: 10rem;
+      }
+
+      .menu {
+        display: flex;
+        justify-content: space-between;
+        font-size: 115%;
+      }
+
+      .menu a {
+        color: chocolate;
+        padding: 0 1vw;
+        transition: all 0.3s ease-in-out;
+      }
+
+      .menu a:hover {
+        opacity: 0.75;
+      }
+    </style>
+
+    <header class="header">
+      <section class="header-content container">
+        <article class="logo">
+          <img
+            src="https://img.freepik.com/vector-gratis/icono-vector-rojo-sport-car-logo-estilo-espacio-negativo_126523-730.jpg?w=740&t=st=1648403461~exp=1648404061~hmac=7aeb55a30c40e68f956bce4debe7a088e919f54975bf4123b64a1f3cbae72ec8"
+          />
+        </article>
+      </section>
+
+      <nav class="menu">
+        <a href="assets/home.html">Home</a>
+        <a href="assets/acerca.html">Acerca</a>
+        <a href="assets/servicios.html">Servicios</a>
+        <a href="assets/contacto.html">Contacto</a>
+      </nav>
+    </header>
+
+    <main class="container">
+      <footer class="footer container">
+        <p>
+          <small>diseñado por autoxbax</small>
+        </p>
+      </footer>
+    </main>
+
+    <script>
+      const d = document,
+        $main = d.querySelector('main');
+
+      const getHTML = (options) => {
+        let { url, success, error } = options;
+        const xhr = new XMLHttpRequest();
+
+        xhr.addEventListener('readystatechange', (e) => {
+          if (xhr.readyState !== 4) return;
+
+          if (xhr.status >= 200 && xhr.status < 300) {
+            let html = xhr.responseText;
+            success(html);
+          } else {
+            let message = xhr.statusText || 'Ocurrio un error';
+            error(`"Errpr" ${xhr.status}: ${message}`);
+          }
+        });
+
+        xhr.open('GET', url);
+        xhr.setRequestHeader('Content-type', 'text/html;charset=utf-8');
+        xhr.send();
+      };
+
+      /*A la carga del documento*/
+
+      d.addEventListener('DOMContentLoaded', (e) => {
+        getHTML({
+          url: './assets/home.html',
+          /*oye en elcontendor main en su contenido innerhtml quiero que agregues ese codigo html
+				que me estas trayendo */
+          success: (html) => ($main.innerHTML = html),
+          error: (err) => ($main.innerHTML = `<h1>${err}</h1>`),
+        });
+      });
+
+      d.addEventListener('click', (e) => {
+        /*oye cuando el e.target que es el objeto quien origina el
+			evento el selector consida con un enlace que esta dentro
+			de una clase menu vas a ejecutar la siguiente programacion*/
+        if (e.target.matches('.menu a')) {
+          e.preventDefault();
+
+          getHTML({
+            url: e.target.href,
+            success: (html) => ($main.innerHTML = html),
+            error: (err) => ($main.innerHTML = `<h1>${err}</h1>`),
+          });
+        }
+      });
+    </script>
+  </body>
+</html>

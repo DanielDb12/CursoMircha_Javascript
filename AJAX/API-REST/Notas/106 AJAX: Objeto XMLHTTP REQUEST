@@ -1,0 +1,41 @@
+1) creamos una variable que llame la instancia const xhr = XMLHTTPREQUEST()
+$xhr = document.getElementByid("xhr")
+
+un fragmento es un mecanismo especial de dom que se crea para ingresar
+todos los datos hasta que tenga todos hacemos una sola insercion
+$fragment = document.createDocumentFragment();
+
+Para que el objeto Xhr funcione debemos tener la isntancia que ya la tenemos
+
+onereadystatechange es e
+
+readystate es el estado de la peticion
+response la respuesta del servidor
+responsetext la respuesta en formato texto
+responsexml formato en forma xml
+status estado de codigo del servidor
+statustext mensaje del codigo de respuesta
+withCredentials nos indica cuando un api es publica o privada
+
+2) es asignar un evento en readystatechange
+xhr.addEventListener("readystatechange", e {
+
+cuando la propiedad ready state sea diferente de 4
+nos importa cuando este completado
+ todo lo que sea 4 simplemente no retornes nada
+if(xhr.readyState !==4) return
+
+
+
+
+
+va recibir dos instrucciones
+3) la instruccion que abre la peticion xhr.open("GET","httpxxxx")
+GET= ingresamos por la url
+POST = Ingresamos por la cabezera
+
+4) enviar la peticion xhr.send();
+
+
+})
+

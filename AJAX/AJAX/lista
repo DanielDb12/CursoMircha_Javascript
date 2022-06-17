@@ -1,0 +1,24 @@
+onabort: null
+onerror: null
+onload: null
+onloadend: null
+onloadstart: null
+onprogress: null
+onreadystatechange: se lanza cuando cambia el  readystate todo recide en el onready statechange
+ontimeout: null
+readyState: estado de la peticion
+response: "respuesta del servidor"
+responseText: "respuesta en formato textual"
+responseType: ""
+responseURL: ""
+responseXML: respuesta en xml
+status: estado de respuesta del servidor 200, 400, 500
+statusText: "codigo de mensaje de la respuesta"
+timeout: 
+whit credential = significa si es un api publica
+
+
+open: The XMLHttpRequest method open() initializes a newly-created request, 
+or re-initializes an existing one.
+
+The XMLHttpRequest method send() sends the request to the server.

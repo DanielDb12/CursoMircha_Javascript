@@ -1,70 +1,68 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>CRUD API REST AJAX</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CRUD API REST AJAX</title>
+  </head>
+  <body>
+    <h1>CRUD API REST AJAX</h1>
+    <section class="crud">
+      <article>
+        <h2 class="crud-title">Agregar Santos</h2>
 
-</head>
-<body>
+        <form class="crud-form">
+          <input type="text" name="nombre" placeholder="nombre" required />
+          <br />
+          <input
+            type="text"
+            name="constelacion"
+            placeholder="constelacion"
+            required
+          />
+          <br />
+          <input type="submit" value="Enviar" />
+          <br />
+          <input type="hidden" name="id" />
+        </form>
+      </article>
+      <article>
+        <h2>Ver Santos</h2>
+        <table class="crud-table">
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Constelacion</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </article>
+    </section>
 
-	<h1>CRUD API REST AJAX</h1>
-	<section class="crud">
-		<article>
-			<h2 class="crud-title">Agregar Santos</h2>
-			
-			<form action="" class="crud-form">
-				<input type="text" name="nombre" placeholder="nombre" required>
-				<br>
-				<input type="text" name="constelacion" placeholder="constelacion" required>
-				<br> 
-				<input type="submit" value="Enviar">
-				<br> 
-				<input type="hidden" name="id">
-			</form>
-		</article>
-		<article>
-			<h2>Ver Santos</h2>
-			<table class="crud-table">
-				<thead>
-					<tr>
-						<th>Nombre</th>
-						<th>Constelacion</th>
-						<th>Acciones</th>
-					</tr>
-				</thead>
-				<tbody></tbody>
-			</table>
-		</article>
-	</section>
+    <template id="crud-template">
+      <tr>
+        <td class="name"></td>
+        <td class="constellation"></td>
+        <td>
+          <button class="edit">Editar</button>
+          <button class="delete">Eliminar</button>
+        </td>
+      </tr>
+    </template>
 
-	<template id="crud-template">
-		<tr>	
-			<td class="name"></td>
-			<td class="costellation"></td>
-			<td>
-				<button class="edit">Editar</button>
-				<button class="delete">Eliminar</button>
-			</td>
-		</tr>
-	</template>
+    <script>
+      //1)XMLHttpRequest
 
-	
-	
+      const d = document,
+        $table = d.querySelector('.crud-table'),
+        $form = d.querySelector('.crud-form'),
+        $title = d.querySelector('.crud-title'),
+        $template = d.getElementById('crud-template').content,
+        $fragment = d.createDocumentFragment();
 
-
-
-<script>
-	//1)XMLHttpRequest
-
-	const d = document,
-	$table = d.querySelector('.crud-table'),
-	$form = d.querySelector('.crud-form'),
-	$title = d.querySelector('.crud-title'),
-	$template = d.getElementById('crud-template').content,
-	$fragment = d.createDocumentFragment();
-
-/*
+      /*
 1) Pasos para AJax:
 	1)crear la instancia del objeto
 	2)crear addEvenlisterner
@@ -75,13 +73,13 @@ Se debe primero Crear un funcion que encapsule todo y pida los elementos necesar
 
 
 
-*/	
+*/
 
-//1) Crear  una funcion expresada
- const ajax = (options) => {
- 	//1) la instancia de la variable
- 	//2) se Usa la destructuracion para cada peticion
- 	/*
+      //1) Crear  una funcion expresada
+      const ajax = (options) => {
+        //1) la instancia de la variable
+        //2) se Usa la destructuracion para cada peticion
+        /*
  		url= string
  		method = string
  		data = object
@@ -89,138 +87,155 @@ Se debe primero Crear un funcion que encapsule todo y pida los elementos necesar
 
  	*/
 
- 	let {url, method, success, error, data} = options;
- 	const xhr = new XMLHttpRequest()
+        let { url, method, success, error, data } = options;
+        const xhr = new XMLHttpRequest();
 
- 	xhr.addEventListener('readystatechange', e => {
+        xhr.addEventListener('readystatechange', (e) => {
+          if (xhr.readyState !== 4) return;
 
- 		if (xhr.readyState!== 4) return; 
+          if (xhr.status >= 200 && xhr.status < 300) {
+            let json = JSON.parse(xhr.responseText);
+            success(json);
+          } else {
+            let message = xhr.statusText || 'Ocurrio un Error';
+            error(`Error ${xhr.status}: ${message}`);
+          }
+          {
+          }
+        });
 
- 		if(xhr.status >= 200 && xhr.status < 300) {
- 			let json = JSON.parse(xhr.responseText);
- 			success(json);
-
- 		} else {
- 			let message = xhr.statusText || 'Ocurrio un Error';
- 			error(`Error ${xhr.status}; ${message}`);
- 		}
-
- 	});
-
-
-
-//metodo open para comunicarnos con la peticion en este caso se coloca un operador de corto circuito si el usuario no indica el metodo aplica get po default
- xhr.open(method || 'GET', url);
-/*
+        //metodo open para comunicarnos con la peticion en este caso se coloca un operador de corto circuito si el usuario no indica el metodo aplica get po default
+        xhr.open(method || 'GET', url);
+        /*
 Header las peticiones tienen cuerpo en las cabeceras
 setRequestHeader por cada cabecera que necesites se tiene que definit el atributo y el valor, si no se especifica la cabecera da un error el valor de texto es plano 
 */
- xhr.setRequestHeader('Content-type', 'aplication/json; charset=UTF-8');
+        xhr.setRequestHeader('Content-type', 'application/json; charset=UTF-8');
 
- // metodo send la data es formato JSON y en este caso se hra lo contrario con el metodo stringify para obtener una cadena de texto de la data 
- xhr.send(JSON.stringify(data));
-			
+        // metodo send la data es formato JSON y en este caso se hra lo contrario con el metodo stringify para obtener una cadena de texto de la data
+        xhr.send(JSON.stringify(data));
+      };
 
- }
+      const getAll = () => {
+        //SE EJECUTA LA FUNCION AJAX
+        ajax({
+          method: 'GET',
+          url: 'http://localhost:3001/santos',
+          success: (res) => {
+            console.log(res);
 
+            /*Por cada elemento que traiga la respuesta*/
+            res.forEach((el) => {
+              /*Entra en elcontenido del template buscate el selector con la clase name y en su contenido textual pones lo que viene en el nombre*/
 
- const getAll = () => {
- 	//SE EJECUTA LA FUNCION AJAX
- 	ajax( {
- 		method:"GET",
- 		url:'http://localhost:3001/santos',
- 		success:(res) => {
- 			console.log(res) 
+              $template.querySelector('.name').textContent = el.nombre;
 
- 			/*Por cada elemento que traiga la respuesta*/
- 			res.forEach(el =>{
+              /**/
+              $template.querySelector('.constellation').textContent =
+                el.constelacion;
+              $template.querySelector('.edit').dataset.id = el.id;
+              $template.querySelector('.edit').dataset.name = el.nombre;
+              $template.querySelector('.edit').dataset.constellation =
+                el.constelacion;
+              $template.querySelector('.delete').dataset.id = el.id;
 
- 				/*Entra en elcontenido del template buscate el selector con la clase name y en su contenido textual pones lo que viene en el nombre*/
-
- 				$template.querySelector('.name').textContent = el.nombre;
-
- 				/**/
- 				$template.querySelector('.costellation').textContent = el.constelacion;
- 				$template.querySelector('.edit').dataset.id = el.id;
- 				$template.querySelector('.edit').dataset.name = el.nombre;
- 				$template.querySelector('.edit').dataset.constellation = el.constelacion;
- 				$template.querySelector('.delete').dataset.id = el.id;
- 				
- 				/*el template lo tenemos que clonar para que quede en memoria
+              /*el template lo tenemos que clonar para que quede en memoria
  				 si colocamos false es vacio y true se agrega el contenido
 
 					una vez recorrido todo el foreach de la respuesta
  				 */
- 				let $clone = d.importNode($template,true);
- 				$fragment.appendChild($clone);
- 			})
- 			/*Dentro de la tabla buscate la etiqueta tbody y como contenido todos esos nodo creado agregalos al tbody de la tabla*/
- 			$table.querySelector('tbody').appendChild($fragment);
+              let $clone = d.importNode($template, true);
+              $fragment.appendChild($clone);
+            });
+            /*Dentro de la tabla buscate la etiqueta tbody y como contenido todos esos nodo creado agregalos al tbody de la tabla*/
+            $table.querySelector('tbody').appendChild($fragment);
+          },
+          error: (err) => {
+            console.log(err);
+            $table.insertAdjacentHTML('afterend', `<p><b>${err}<b></p>`);
+          },
 
- 		},
- 		error:(err) => {
- 		console.log(err);
- 		$table.insertAdjacentHTML('afterend',`<p><b>${err}<b></p>`)},
+          //no necesita mandarle ninguna peticion se coloca null
+          data: null,
+        });
+      };
 
-
-
-
-	 	//no necesita mandarle ninguna peticion se coloca null
- 		data:null
- 	})
- }
-
-/*NO SE USA ARROW FUNCTION CUANDO SE INSERTA UN NUEVO ELEMENTO EN ESTE CASO LOS CABALLEROS LUEGO DE INSERTALO TENGO QUE EJECUTARLO EL PINTAR TODOS LOS CABALLEROS
+      /*NO SE USA ARROW FUNCTION CUANDO SE INSERTA UN NUEVO ELEMENTO EN ESTE CASO LOS CABALLEROS LUEGO DE INSERTALO TENGO QUE EJECUTARLO EL PINTAR TODOS LOS CABALLEROS
 PARA QUE APAREZCA EL NUEVO SANTO NO CONVENDRIA PROGRAMAR EN UNA FUNCION ANONIMA 
 AQUI PRIMERO SE CREA LA FUNCION Y MANDARLA A LLAMAR
 GET ALL = OBTIENE TODO
  */
 
- d.addEventListener('DOMContentLoaded',getAll);
+      d.addEventListener('DOMContentLoaded', getAll);
 
- d.addEventListener('submit',e => {
- 	//si el objeto que origina ese evento es el formulario que esta guardado en la variable formu entonces ejecutamos la programacion  que viene alli
+      d.addEventListener('submit', (e) => {
+        //si el objeto que origina ese evento es el formulario que esta guardado en la variable formu entonces ejecutamos la programacion  que viene alli
 
- 	if(e.target === $form) {
- 		// se previene el envio del formulario por defecto que es detener la ejecucion por que el procesamiento lo haremos mediante de ajax
- 		e.preventDefault()
+        if (e.target === $form) {
+          // se previene el envio del formulario por defecto que es detener la ejecucion por que el procesamiento lo haremos mediante de ajax
+          e.preventDefault();
 
-	 // E.TARGET ES EL FORMULARIO EL ELEMENTO SE LLAMA ID Y NOS INTERESA EL VALOR 
+          // E.TARGET ES EL FORMULARIO EL ELEMENTO SE LLAMA ID Y NOS INTERESA EL VALOR
 
-	 if(!e.target.id.value) {
+          if (!e.target.id.value) {
+            //SI no existe el valor Creamos un Create-POST
 
-	 	//SI no existe el valor Creamos un Create-POST
+            ajax({
+              url: 'http://localhost:3001/santos',
+              method: 'POST',
+              success: (res) => location.reload(),
+              error: (err) =>
+                $form.insertAdjacentHTML('afterend', `<p><b>${err}</b></p>`),
+              data: {
+                nombre: e.target.nombre.value,
+                constelacion: e.target.constelacion.value,
+              },
+            });
+            //Update-Put
+          } else {
+            // si existe el valor haremos una peticion Update- put
 
-	 	ajax ({
-	 		url:"http://localhost:3001/santos",
-	 		method: 'POST',
-	 		success:(res) => location.reload(),
-	 		error:() => $form.insertAdjacentHTML('afterend', `<p><b>${err}</b></p>`),
-	 		data:{
-	 			nombre:e.target.nombre.value,
-	 			constelacion:e.target.constelacion.value
-	 		}
-	 	});
-	 	//Update-Put
+            ajax({
+              url: `http://localhost:3001/santos/${e.target.id.value}`,
+              method: 'PUT',
+              success: (res) => location.reload(),
+              error: (err) =>
+                $form.insertAdjacentHTML('afterend', `<p><b>${err}</b></p>`),
+              data: {
+                nombre: e.target.nombre.value,
+                constelacion: e.target.constelacion.value,
+              },
+            });
+          }
+        }
+      });
 
-	 } else {
-	 	// si existe el valor haremos una peticion Update- put
-	 }
- 	}
- })
+      d.addEventListener('click', (e) => {
+        if (e.target.matches('.edit')) {
+          $title.textContent = 'Editar Santo';
+          $form.nombre.value = e.target.dataset.name;
+          $form.constelacion.value = e.target.dataset.constellation;
+          $form.id.value = e.target.dataset.id;
+        }
 
+        if (e.target.matches('.delete')) {
+          /*del boton que estan e.target de su lista de dataatributes y el atributo se llama id*/
+          let isDelete = confirm(
+            `¿esta seguro de eliminar el id ${e.target.dataset.id}?`,
+          );
 
+          if (isDelete) {
+            ajax({
+              url: `http://localhost:3001/santos/${e.target.dataset.id}`,
+              method: 'DELETE',
+              success: (res) => location.reload(),
+              error: (err) => alert(err),
 
-
-
-
-	
-
-
-
-</script>
-
-
-
-</body>
+              /*como se va a eliminar el objeto no  es necesario obtener el objeto data*/
+            });
+          }
+        }
+      });
+    </script>
+  </body>
 </html>

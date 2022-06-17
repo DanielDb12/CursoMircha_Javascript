@@ -23,7 +23,7 @@ const NOMBRE = Symbol('nombre');
 const SALUDAR = Symbol('saludar');
 
 const persona = {
-	[NOMBRE]:'Daniel'
+	[NOMBRE]:'Daniel',
 	edad: 35
 };
 

@@ -63,28 +63,24 @@ console.log('fin')
 //  Codigo Asincrono no Bloqueante
 
 (() => {
-	console.log('Codigo Sincrono');
-console.log('inicio');
+  console.log('Codigo Sincrono');
+  console.log('inicio');
 
-function dos() {
-	setTimeout(function () {
-		console.log('dos')
+  function dos() {
+    setTimeout(function () {
+      console.log('dos');
+    }, 1000);
+  }
 
-	},1000);
-	
-} 
+  function uno() {
+    setTimeout(function () {
+      console.log('uno');
+    }, 0);
 
-function uno() {
-	setTimeout(function(){
-		console.log('uno')
-	},0);
-	
-	dos();
-	console.log('tres')
-}
+    dos();
+    console.log('tres');
+  }
 
-uno();
-console.log('fin')
-
+  uno();
+  console.log('fin');
 })();
-
